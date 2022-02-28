@@ -1,11 +1,13 @@
 import { DockSharp } from "@mui/icons-material";
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import { stringify } from "querystring";
-import { MdDoc } from "../models/MdDoc";
+import MdDoc from "../models/MdDoc";
 import { TagData } from "../models/TagData";
 
 export interface MdDocService {
   getAllDocuments: () => Promise<MdDoc[]>;
+
+  saveDocument(doc: MdDoc): Promise<void>;
 
   getAllTags: (docs: MdDoc[]) => TagData[];
 
@@ -22,6 +24,10 @@ class DefaultMdDocService implements MdDocService {
   async getAllDocuments(): Promise<MdDoc[]> {
     let result = await axios.get<MdDoc[]>("/api/docs");
     return result.data;
+  }
+
+  async saveDocument(doc: MdDoc): Promise<void> {
+    await axios.put(`/api/docs/${doc.id}`, doc);
   }
 
   getAllTags(docs: MdDoc[]): TagData[] {

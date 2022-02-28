@@ -4,5 +4,6 @@ export default interface MdDoc {
   todo: boolean;
   tags: string[];
   modified: Date;
+  title: string;
   content: string;
 }

@@ -10,6 +10,8 @@ import {
   ListItemText,
   Chip,
   ListItemButton,
+  SxProps,
+  Theme,
 } from "@mui/material";
 
 import AssignmentIcon from "@mui/icons-material/Assignment";
@@ -18,6 +20,7 @@ import TagOutlinedIcon from "@mui/icons-material/TagOutlined";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { TagData } from "../models/TagData";
 import { NotebookCounts, NotebookSelectionType } from "../state/NotebookState";
+import { Tag } from "@mui/icons-material";
 
 type Props = {
   counts: NotebookCounts;
@@ -26,13 +29,40 @@ type Props = {
   onSelection: (type: NotebookSelectionType, tag?: string) => void;
 };
 
+function _getTextStyle(condition: boolean) {
+  return {
+    color: condition ? "primary.main" : undefined,
+  };
+}
+
+function _getChipStyle(condition: boolean) {
+  return {
+    color: condition ? "primary.main" : undefined,
+    borderRadius: 2,
+    minWidth: 40,
+    fontWeight: condition ? "bold" : "normal",
+    bgcolor: condition ? "#DADDFD" : undefined,
+  };
+}
+
+function _getIconColor(condition: boolean) {
+  return condition ? "primary" : undefined;
+}
+
 export default function FiltersDrawer({
   counts,
   tags,
   selectionType,
   onSelection,
 }: Props) {
-  return (
+  const [mounted, setMounted] = React.useState(false);
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+  const [selectedTag, setSelectedTag] = React.useState<string | undefined>(
+    undefined
+  );
+  return mounted ? (
     <div>
       <List>
         <ListItem>
@@ -52,59 +82,89 @@ export default function FiltersDrawer({
           key="notes"
           onClick={(event) => {
             onSelection(NotebookSelectionType.Notes);
+            setSelectedTag(undefined);
           }}
         >
           <ListItemIcon>
             <AssignmentIcon
               fontSize="small"
-              color={
-                selectionType === NotebookSelectionType.Notes ||
-                selectionType === NotebookSelectionType.None
-                  ? "secondary"
-                  : undefined
-              }
+              color={_getIconColor(
+                selectionType in
+                  [
+                    NotebookSelectionType.Notes,
+                    selectionType === NotebookSelectionType.None,
+                  ]
+              )}
             />
           </ListItemIcon>
-          <ListItemText primary="Notes" />
-          <Chip label={counts.notes} />
+          <ListItemText
+            primary="Notes"
+            sx={_getTextStyle(
+              selectionType in
+                [
+                  NotebookSelectionType.Notes,
+                  selectionType === NotebookSelectionType.None,
+                ]
+            )}
+          />
+          <Chip
+            label={counts.notes}
+            sx={_getChipStyle(
+              selectionType in
+                [
+                  NotebookSelectionType.Notes,
+                  selectionType === NotebookSelectionType.None,
+                ]
+            )}
+          />
         </ListItemButton>
         <ListItemButton
           key="todo"
           onClick={(event) => {
             onSelection(NotebookSelectionType.Todos);
+            setSelectedTag(undefined);
           }}
         >
           <ListItemIcon>
             <AssignmentTurnedInIcon
               fontSize="small"
-              color={
+              color={_getIconColor(
                 selectionType === NotebookSelectionType.Todos
-                  ? "secondary"
-                  : undefined
-              }
+              )}
             />
           </ListItemIcon>
-          <ListItemText primary="Todo" />
-          <Chip label={counts.todos} />
+          <ListItemText
+            primary="Todo"
+            sx={_getTextStyle(selectionType === NotebookSelectionType.Todos)}
+          />
+          <Chip
+            label={counts.todos}
+            sx={_getChipStyle(selectionType === NotebookSelectionType.Todos)}
+          />
         </ListItemButton>
         <ListItemButton
           key="trash"
           onClick={(event) => {
             onSelection(NotebookSelectionType.Trash);
+            setSelectedTag(undefined);
           }}
         >
           <ListItemIcon>
             <DeleteIcon
               fontSize="small"
-              color={
+              color={_getIconColor(
                 selectionType === NotebookSelectionType.Trash
-                  ? "secondary"
-                  : undefined
-              }
+              )}
             />
           </ListItemIcon>
-          <ListItemText primary="Trash" />
-          <Chip label={counts.archived} />
+          <ListItemText
+            primary="Trash"
+            sx={_getTextStyle(selectionType === NotebookSelectionType.Trash)}
+          />
+          <Chip
+            label={counts.archived}
+            sx={_getChipStyle(selectionType === NotebookSelectionType.Trash)}
+          />
         </ListItemButton>
       </List>
       <ListItem>
@@ -116,16 +176,37 @@ export default function FiltersDrawer({
             key={tag}
             onClick={(event) => {
               onSelection(NotebookSelectionType.Tag, tag);
+              setSelectedTag(tag);
             }}
           >
             <ListItemIcon>
-              <TagOutlinedIcon fontSize="small" />
+              <TagOutlinedIcon
+                fontSize="small"
+                color={_getIconColor(
+                  selectionType == NotebookSelectionType.Tag &&
+                    selectedTag === tag
+                )}
+              />
             </ListItemIcon>
-            <ListItemText primary={tag} />
-            <Chip label={count} />
+            <ListItemText
+              primary={tag}
+              sx={_getTextStyle(
+                selectionType == NotebookSelectionType.Tag &&
+                  selectedTag === tag
+              )}
+            />
+            <Chip
+              label={count}
+              sx={_getChipStyle(
+                selectionType == NotebookSelectionType.Tag &&
+                  selectedTag === tag
+              )}
+            />
           </ListItemButton>
         ))}
       </List>
     </div>
+  ) : (
+    <div />
   );
 }

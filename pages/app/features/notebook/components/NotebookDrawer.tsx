@@ -19,6 +19,10 @@ type Props = {
 };
 
 export default function NotebookDrawer(props: Props) {
+  const [mounted, setMounted] = React.useState(false);
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
   const drawer = (
     <Grid
       sx={{ height: "100%", flexGrow: 0 }}
@@ -41,12 +45,13 @@ export default function NotebookDrawer(props: Props) {
           <NotesDrawer
             docs={props.docs}
             onSelectDocument={props.onSelectDocument}
+            onChangeDocument={props.onSelectDocument}
           />
         </Box>
       </Grid>
     </Grid>
   );
-  return (
+  return mounted ? (
     <Box
       component="nav"
       sx={{ width: { sm: props.width }, flexShrink: { sm: 0 } }}
@@ -83,5 +88,7 @@ export default function NotebookDrawer(props: Props) {
         {drawer}
       </Drawer>
     </Box>
+  ) : (
+    <div />
   );
 }

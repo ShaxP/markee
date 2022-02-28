@@ -13,8 +13,13 @@ import { NotebookActionType } from "./state/NotebookAction";
 import { notebookStateReducer } from "./state/Reducer";
 import NotebookDrawer from "./components/NotebookDrawer";
 import NotebookAppBar from "./components/NotebookAppBar";
-import NoteEditor from "./components/NoteEditor";
+import dynamic from "next/dynamic";
 
+const NoteEditor = dynamic(() => import("./components/NoteEditor"), {
+  ssr: false,
+});
+
+const MdEditor = dynamic(() => import("./components/MdEditor"), { ssr: false });
 export default function Notebook() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -71,8 +76,10 @@ export default function Notebook() {
     };
   }, []);
 
+  // Save this in context and use in Milkdown menu to shift the left positin of select menus
   const drawerWidth = 480;
-
+  const content = selectedDocument?.content ?? "";
+  const title = selectedDocument?.title ?? "";
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -92,7 +99,13 @@ export default function Notebook() {
         onDrawerToggle={handleDrawerToggle}
       />
 
-      <NoteEditor drawerWidth={drawerWidth} doc={selectedDocument} />
+      {/* <NoteEditor drawerWidth={drawerWidth} doc={selectedDocument} /> */}
+      <MdEditor
+        doc={selectedDocument}
+        content={content}
+        title={title}
+        documentChanged={handleDocumentSelection}
+      />
     </Box>
   );
 }

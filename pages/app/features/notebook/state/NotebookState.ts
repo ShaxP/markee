@@ -1,4 +1,4 @@
-import { MdDoc } from "../models/MdDoc";
+import MdDoc from "../models/MdDoc";
 import { TagData } from "../models/TagData";
 
 export enum NotebookSelectionType {
