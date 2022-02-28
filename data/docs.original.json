@@ -1,0 +1,60 @@
+{
+    "docs": [
+        {
+            "id": "1",
+            "archived": false,
+            "todo": false,
+            "tags": [
+                "Sports",
+                "Art",
+                "Fishing",
+                "Golf",
+                "Work"
+            ],
+            "modified": "2018-05-05T17:23",
+            "title": "Random",
+            "content": "I don't know what to write here asd/\n"
+        },
+        {
+            "id": "2",
+            "archived": false,
+            "todo": true,
+            "tags": [
+                "Sports",
+                "Fishing",
+                "Golf",
+                "Web",
+                "Karate"
+            ],
+            "modified": "2021-03-21T17:23",
+            "title": "Another note",
+            "content": "*   [ ] List\n\n<!---->\n\n*   [ ] List2\n\n<!---->\n\n*   [ ] List3\n\n"
+        },
+        {
+            "id": "3",
+            "archived": false,
+            "todo": true,
+            "tags": [
+                "Art",
+                "Fishing",
+                "Beer",
+                "Work"
+            ],
+            "modified": "2015-02-16T13:21",
+            "title": "London brewry",
+            "content": "London brewery is one of the **finest** institutes in UK"
+        },
+        {
+            "id": "4",
+            "archived": true,
+            "todo": false,
+            "tags": [
+                "Entertainment",
+                "TV"
+            ],
+            "modified": "2022-01-30T9:14",
+            "title": "Ozark",
+            "content": "Greatest series of all time is Ozark"
+        }
+    ]
+}
